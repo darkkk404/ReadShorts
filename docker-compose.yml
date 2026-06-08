@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: readshorts-backend
+    restart: always
+    ports:
+      - "3507:3507"
+    volumes:
+      - backend-data:/app/data
+    environment:
+      - PORT=3507
+      - NODE_ENV=production
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: readshorts-frontend
+    restart: always
+    ports:
+      - "3508:3508"
+    depends_on:
+      - backend
+
+volumes:
+  backend-data:
+    driver: local
